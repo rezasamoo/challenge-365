@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#111827">
+<title>چالش پس‌انداز ۳۶۵ روزه</title>
+<style>
+:root{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Tahoma,sans-serif;color:#f8fafc;background:#0b1220}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(155deg,#172033,#0b1220 55%);min-height:100vh}
+.app{max-width:760px;margin:auto;padding:22px 16px 40px}header{text-align:center;padding:18px 0 22px}
+.kicker{color:#a3e635;font-size:13px;font-weight:700;letter-spacing:.4px}h1{font-size:26px;margin:9px 0 7px}.sub{color:#aab5c7;font-size:14px}
+.card{background:#192438;border:1px solid #2c3a51;border-radius:18px;padding:16px;margin-bottom:14px}
+.label{font-size:12px;color:#aab5c7;margin-bottom:8px}.authbox{max-width:460px;margin:0 auto 16px}.authbox input{width:100%;margin:6px 0}
+input{min-width:0;background:#192438;border:1px solid #34445d;border-radius:12px;color:white;padding:12px 14px;font:inherit;outline:none}input:focus{border-color:#a3e635}
+button{font:inherit;cursor:pointer}.auth-actions{display:flex;gap:8px;margin-top:8px}.auth-actions button{flex:1}
+.primary{background:#84cc16;border:1px solid #a3e635;color:#172033;border-radius:12px;padding:11px 13px;font-weight:800}.secondary{background:transparent;border:1px solid #526078;color:#d5deea;border-radius:12px;padding:11px 13px}
+.auth-status,.save-status{font-size:12px;color:#aab5c7;line-height:1.8;margin-top:9px}.userbar{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:12px;color:#cbd5e1;margin-bottom:12px}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}.stats .card{margin:0}.value{font-size:21px;font-weight:800;line-height:1.4}.value small{font-size:12px;color:#b9c4d4;font-weight:500}
+.progress-card{margin-bottom:16px}.progress-top{display:flex;justify-content:space-between;gap:8px;font-size:13px;color:#c5d0df;margin-bottom:10px}.track{height:10px;background:#0d1728;border-radius:20px;overflow:hidden}.bar{height:100%;width:0;background:linear-gradient(90deg,#84cc16,#bef264);border-radius:20px;transition:width .2s}
+.tools{display:flex;gap:9px;margin:16px 0 12px}.tools input{flex:1}.reset{background:transparent;border:1px solid #526078;color:#d5deea;border-radius:12px;padding:0 13px;font-size:13px;white-space:nowrap}.random{background:#84cc16;border:1px solid #a3e635;color:#172033;border-radius:12px;padding:0 13px;font-size:13px;font-weight:800;white-space:nowrap}
+.legend{font-size:12px;color:#aab5c7;margin:10px 2px 14px}.grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:7px}.day{aspect-ratio:1/1;border:1px solid #34445d;background:#192438;color:#f8fafc;border-radius:11px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:2px;transition:.15s}.day .n{font-size:15px;font-weight:800}.day .m{font-size:9px;color:#aab5c7}.day.done{background:#365314;border-color:#84cc16;color:#ecfccb}.day.done .m{color:#d9f99d}.day:active{transform:scale(.94)}
+.footer{text-align:center;color:#8290a5;font-size:11px;margin-top:20px;line-height:1.8}.empty{grid-column:1/-1;text-align:center;color:#aab5c7;padding:25px}
+#appArea[hidden],#authBox[hidden]{display:none!important}
+@media(min-width:600px){.grid{grid-template-columns:repeat(10,minmax(0,1fr));gap:9px}.day{border-radius:13px}.day .n{font-size:17px}.day .m{font-size:10px}}
+</style>
+</head>
+<body>
+<main class="app">
+<header><div class="kicker">یک قدم کوچک، هر روز</div><h1>چالش پس‌انداز ۳۶۵ روزه</h1><div class="sub">هر خانه را که انتخاب کنی، همان مبلغ به پس‌اندازت اضافه می‌شود.</div></header>
+<section class="card authbox" id="authBox">
+ <div style="font-weight:800;margin-bottom:8px">ورود یا ثبت‌نام</div>
+ <div class="label">برای ذخیره شدن پس‌اندازت در حساب شخصی، وارد شو یا حساب بساز.</div>
+ <input id="email" type="email" inputmode="email" autocomplete="email" placeholder="ایمیل">
+ <input id="password" type="password" autocomplete="current-password" placeholder="رمز عبور (حداقل ۶ کاراکتر)">
+ <div class="auth-actions"><button class="primary" id="signup">ثبت‌نام</button><button class="secondary" id="login">ورود</button></div>
+ <div class="auth-status" id="authStatus">برای هر نفر یک حساب جداگانه ساخته می‌شود.</div>
+</section>
+<section id="appArea" hidden>
+ <div class="userbar"><span id="userEmail"></span><button class="secondary" id="logout">خروج از حساب</button></div>
+ <section class="stats"><div class="card"><div class="label">پس‌انداز جمع‌شده</div><div class="value" id="saved">۰ <small>تومان</small></div></div><div class="card"><div class="label">باقی‌مانده تا هدف</div><div class="value" id="left">۶۶٬۷۹۵٬۰۰۰ <small>تومان</small></div></div></section>
+ <section class="card progress-card"><div class="progress-top"><span>پیشرفت چالش</span><strong id="count">۰ از ۳۶۵ خانه</strong></div><div class="track"><div class="bar" id="bar"></div></div></section>
+ <div class="tools"><input id="search" type="number" min="1" max="365" inputmode="numeric" placeholder="پیدا کردن شماره خانه (۱ تا ۳۶۵)"><button class="random" id="random">انتخاب شانسی 🎲</button><button class="reset" id="reset">شروع دوباره</button></div>
+ <div class="legend">روی هر خانه بزن تا انتخاب یا از حالت انتخاب خارج شود. مبلغ هر خانه برابر شمارهٔ آن × ۱٬۰۰۰ تومان است.</div>
+ <section class="grid" id="grid" aria-label="خانه‌های پس‌انداز"></section>
+ <div class="footer"><span id="saveStatus" class="save-status">در حال بارگذاری اطلاعات…</span><br>اطلاعات هر حساب جداگانه و آنلاین ذخیره می‌شود.<br>هدف نهایی: ۶۶٬۷۹۵٬۰۰۰ تومان</div>
+</section>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL='https://fiqayoowqahlthruxdot.supabase.co';
+const SUPABASE_PUBLISHABLE_KEY='sb_publishable_EPALM1VpLIwYskwh-4mRzA_s4Idrjwc';
+let supabase=null;
+function ensureClient(){
+ if(supabase)return supabase;
+ if(!window.supabase||!window.supabase.createClient)throw new Error('کتابخانه اتصال بارگذاری نشد. اینترنت را بررسی و صفحه را دوباره باز کن.');
+ supabase=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY);
+ return supabase;
+}
+let chosen=new Set(); let currentUser=null; let saveTimer=null;
+const fa=n=>new Intl.NumberFormat('fa-IR').format(n);
+const $=id=>document.getElementById(id);
+function setAuthStatus(message){$('authStatus').textContent=message}
+function clean(data){return Array.isArray(data)?data.filter(n=>Number.isInteger(n)&&n>=1&&n<=365):[]}
+async function signup(){
+ try{ensureClient()}catch(e){setAuthStatus(e.message);return}
+ const email=$('email').value.trim(),password=$('password').value;
+ if(!email||password.length<6){setAuthStatus('ایمیل و رمز عبور حداقل ۶ کاراکتری وارد کن.');return}
+ setAuthStatus('در حال ساخت حساب…');
+ const {data,error}=await supabase.auth.signUp({email,password,options:{emailRedirectTo:'https://rezasamoo.github.io/challenge-365/'}});
+ if(error){setAuthStatus('خطا: '+error.message);return}
+ if(data.session){await enterApp(data.session.user)}else{setAuthStatus('حساب ساخته شد. ایمیلت را باز کن و لینک تأیید را بزن؛ بعد برگرد و وارد شو.')}
+}
+async function login(){
+ try{ensureClient()}catch(e){setAuthStatus(e.message);return}
+ const email=$('email').value.trim(),password=$('password').value;
+ if(!email||!password){setAuthStatus('ایمیل و رمز عبورت رو وارد کن.');return}
+ setAuthStatus('در حال ورود…');
+ const {data,error}=await supabase.auth.signInWithPassword({email,password});
+ if(error){setAuthStatus('خطا: '+error.message);return}
+ await enterApp(data.user);
+}
+async function logout(){await supabase.auth.signOut();currentUser=null;chosen.clear();$('appArea').hidden=true;$('authBox').hidden=false;setAuthStatus('از حساب خارج شدی. برای ادامه دوباره وارد شو.')}
+async function loadProgress(){
+ try{ensureClient()}catch(e){$('saveStatus').textContent=e.message;return}
+ $('saveStatus').textContent='در حال دریافت اطلاعات از سرور…';
+ const {data,error}=await supabase.from('savings_progress').select('checked_cells').eq('user_id',currentUser.id).maybeSingle();
+ if(error){$('saveStatus').textContent='خطا در دریافت اطلاعات: '+error.message;return}
+ chosen=new Set(clean(data?.checked_cells));render();$('saveStatus').textContent='اطلاعات حساب بارگذاری شد ✓';
+}
+async function save(){
+ if(!currentUser)return;
+ try{ensureClient()}catch(e){$('saveStatus').textContent=e.message;return}
+ const data=[...chosen].sort((a,b)=>a-b);
+ $('saveStatus').textContent='در حال ذخیره آنلاین…';
+ const {error}=await supabase.from('savings_progress').upsert({user_id:currentUser.id,checked_cells:data,updated_at:new Date().toISOString()},{onConflict:'user_id'});
+ $('saveStatus').textContent=error?'خطا در ذخیره: '+error.message:'ذخیره آنلاین شد ✓';
+}
+function scheduleSave(){clearTimeout(saveTimer);saveTimer=setTimeout(save,250)}
+async function enterApp(user){currentUser=user;$('authBox').hidden=true;$('appArea').hidden=false;$('userEmail').textContent=user.email||'حساب من';await loadProgress()}
+function render(){
+ const q=Number($('search').value||0),grid=$('grid');grid.innerHTML='';
+ for(let i=1;i<=365;i++){if(q&&i!==q)continue;const b=document.createElement('button');b.className='day'+(chosen.has(i)?' done':'');b.type='button';b.setAttribute('aria-pressed',chosen.has(i)?'true':'false');b.innerHTML='<span class="n">'+fa(i)+'</span><span class="m">'+fa(i*1000)+'</span>';
+ b.addEventListener('click',()=>{chosen.has(i)?chosen.delete(i):chosen.add(i);render();scheduleSave()});grid.appendChild(b)}
+ if(!grid.children.length)grid.innerHTML='<div class="empty">شماره‌ای در این بازه پیدا نشد.</div>';
+ const total=[...chosen].reduce((sum,n)=>sum+n*1000,0);$('saved').innerHTML=fa(total)+' <small>تومان</small>';$('left').innerHTML=fa(66795000-total)+' <small>تومان</small>';$('count').textContent=fa(chosen.size)+' از ۳۶۵ خانه';$('bar').style.width=(chosen.size/365*100)+'%';
+}
+$('signup').type='button';$('login').type='button';$('logout').type='button';$('random').type='button';$('reset').type='button';
+$('signup').addEventListener('click',e=>{e.preventDefault();signup()});$('login').addEventListener('click',e=>{e.preventDefault();login()});$('logout').addEventListener('click',e=>{e.preventDefault();logout()});
+$('search').addEventListener('input',render);
+$('random').addEventListener('click',()=>{const remaining=[];for(let i=1;i<=365;i++)if(!chosen.has(i))remaining.push(i);if(!remaining.length){alert('همهٔ خانه‌ها انتخاب شده‌اند!');return}const number=remaining[Math.floor(Math.random()*remaining.length)];chosen.add(number);$('search').value='';render();scheduleSave();const selected=$('grid').querySelector('.day.done');if(selected)selected.scrollIntoView({behavior:'smooth',block:'center'})});
+$('reset').addEventListener('click',()=>{if(confirm('همهٔ انتخاب‌ها پاک شوند و چالش از اول شروع شود؟')){chosen.clear();$('search').value='';render();save()}});
+(async()=>{try{ensureClient();const {data:{session}}=await supabase.auth.getSession();if(session)await enterApp(session.user)}catch(e){setAuthStatus('آماده ورود و ثبت‌نام؛ '+e.message)}})();
+</script>
+</body>
+</html>
